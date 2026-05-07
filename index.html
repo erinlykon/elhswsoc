@@ -200,7 +200,7 @@ body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min
 <nav class="nav">
   <div class="nav-tab on" id="tab-player">&#x1F3C3; Player</div>
   <div class="nav-tab" id="tab-team">&#x1F465; Team Wall</div>
-  <div class="nav-tab" id="tab-coach">&#x1F4CB; Coach</div>
+  <div class="nav-tab" id="tab-coach">&#x1F451; Leaders</div>
 </nav>
 
 <!-- PLAYER -->
@@ -300,7 +300,7 @@ body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min
     <div class="pledge-card">
       <span class="pledge-lbl">Write it. Lock it. Own it.</span>
       <p class="pledge-sub">One moment that belongs to you in the playoffs &mdash; a tackle, a run, a save, a header. Something only you can give this team.</p>
-      <textarea class="pledge-input" id="pledgeInput" placeholder="In the playoffs, I will..." rows="3"></textarea>
+      <textarea class="pledge-input" id="pledgeInput" placeholder="e.g. In the playoffs, I will win every header in my zone and never let my player turn on me. I will be the reason we keep a clean sheet in Round 3." rows="3"></textarea>
       <button class="pledge-btn" id="pledgeBtn">&#x1F512; Lock It In</button>
       <div class="pledge-ok" id="pledgeOk">&#10003; Locked. You've made it real.</div>
     </div>
@@ -336,48 +336,57 @@ body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min
   <div class="spacer"></div>
 </div>
 
-<!-- COACH -->
+<!-- LEADERSHIP -->
 <div class="view" id="view-coach">
   <div class="hdr">
     <img class="logo" src="logo.png" alt="EL Mustangs">
     <div>
-      <div class="tname">COACH <span>DASHBOARD</span></div>
-      <div class="tsub">East Lincoln Mustangs &bull; 2026 Playoffs</div>
+      <div class="tname">MUSTANG <span>LEADERS</span></div>
+      <div class="tsub">Setting the standard. Carrying the team.</div>
       <div class="pills">
-        <span class="pill pill-g">20 &mdash; 1 &mdash; 2</span>
-        <span class="pill pill-o">Seeding: Friday</span>
+        <span class="pill pill-g">5 Leaders</span>
+        <span class="pill pill-o">Round 3 Mission</span>
       </div>
     </div>
   </div>
-  <div class="sec">Season Stats</div>
-  <div class="stats-grid">
-    <div class="stat-box"><div class="stat-n g">20</div><div class="stat-l">Wins</div></div>
-    <div class="stat-box"><div class="stat-n w">1</div><div class="stat-l">Loss</div></div>
-    <div class="stat-box"><div class="stat-n w">2</div><div class="stat-l">Draws</div></div>
-    <div class="stat-box"><div class="stat-n o">#36</div><div class="stat-l">NC Rank</div></div>
-    <div class="stat-box"><div class="stat-n w">255</div><div class="stat-l">National</div></div>
-    <div class="stat-box"><div class="stat-n w" style="font-size:18px;">14-1-1</div><div class="stat-l">Conference</div></div>
-  </div>
-  <div class="sec">Playoff Mission</div>
+
+  <div class="sec">Your Leaders This Playoff Run</div>
   <div class="coach-wrap">
     <div class="coach-card">
-      <p class="coach-note"><strong>Target: Round 3 and beyond.</strong> Rounds 1 and 2 are controlled &mdash; managed with full intensity but not desperation. <strong>Round 3 is the real mission.</strong> A result there advances this program further than any previous EL Women's team. That's the conversation this week. That's the standard.</p>
+      <p class="coach-note">These five players set the tempo. In every drill, every huddle, every moment on the sideline &mdash; <strong>what they do, the team does.</strong> If you are a leader on this list, this tab is your reminder of what that means.</p>
     </div>
   </div>
-  <div class="sec">Player Commitment Tracker</div>
+
+  <div class="coach-wrap" style="gap:8px;" id="leaderCards"></div>
+
+  <div class="sec">What Leaders Watch For</div>
   <div class="coach-wrap">
     <div class="coach-card">
-      <div id="coachSummary" style="font-size:13px;color:var(--text-sec);margin-bottom:10px;"><strong style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text);display:block;line-height:1;margin-bottom:2px;">0</strong> players committed on Team Wall</div>
+      <div class="coach-title">In Every Training Session</div>
+      <div class="cue-list">
+        <div class="cue-item"><div class="cue-text">&#x1F525; Who is giving less than full effort &mdash; name it quietly, lift them</div><div class="cue-when">Not a call-out. A hand reaching down.</div></div>
+        <div class="cue-item"><div class="cue-text">&#x1F4AC; Who looks disconnected &mdash; go stand next to them</div><div class="cue-when">Presence is the most powerful leadership tool you have.</div></div>
+        <div class="cue-item"><div class="cue-text">&#x26A1; Who needs a spark before drills &mdash; be that spark</div><div class="cue-when">Energy is contagious. You set the temperature.</div></div>
+        <div class="cue-item"><div class="cue-text">&#x1F3AF; Who is doubting themselves &mdash; remind them of what you've seen them do</div><div class="cue-when">Specific praise sticks. Vague praise disappears.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Leadership Cues &mdash; Say These Out Loud</div>
+  <div class="coach-wrap">
+    <div class="coach-card">
+      <div class="cue-list" id="leaderCues"></div>
+    </div>
+  </div>
+
+  <div class="sec">Team Commitment Snapshot</div>
+  <div class="coach-wrap">
+    <div class="coach-card">
+      <div id="coachSummary" style="font-size:13px;color:var(--text-sec);margin-bottom:10px;"></div>
       <div class="roster-list" id="coachRoster"></div>
     </div>
   </div>
-  <div class="sec">Pre-Training Cues</div>
-  <div class="coach-wrap">
-    <div class="coach-card">
-      <div class="coach-title">Say Before Every Session</div>
-      <div class="cue-list" id="coachCues"></div>
-    </div>
-  </div>
+
   <div class="spacer"></div>
 </div>
 
@@ -408,7 +417,7 @@ var ROSTER = [
   "Alina Strauss",
   "Kennedy Gallentine",
   "Brooklynn Benfield",
-  "Elysia Tiziani",
+  "Elysia (Elle) Tiziani \u26a0\ufe0f INJ",
   "Briana Hickey",
   "Kellie Cleeland",
   "Kenadee Byus",
@@ -420,9 +429,14 @@ var ROSTER = [
   "Katelyn Grass",
   "Sydney Dann",
   "Melody Echeverria",
-  "Piper Rasmussen",
+  "Piper Rasmussen \u26a0\ufe0f INJ",
   "Lily Felts",
-  "Emma Davis"
+  "Emma Davis",
+  "Reese Hamilton",
+  "Quinn Hamilton",
+  "Malena Arndt",
+  "Mona Lefevers",
+  "Lacey Petterson"
 ];
 
 var COMMITS = [
@@ -452,13 +466,20 @@ var RITUAL_ITEMS = [
   {id:"r5", icon:"&#x1F512;", text:"Hold my commitments every minute"}
 ];
 
-var COACH_CUES = [
-  {icon:"&#x1F5E3;", text:'"Twenty wins is the floor, not the ceiling."',                             when:"Open every pre-training huddle"},
-  {icon:"&#x1F5E3;", text:'"I felt more drive than you last week. That changes today."',              when:"When energy is flat at the start"},
-  {icon:"&#x1F5E3;", text:'"The pushers never stopped. Everyone runs with them now."',               when:"To lift bench players and hardest workers"},
-  {icon:"&#x1F5E3;", text:'"Potential without performance at the right moment is a lost opportunity."', when:"If seniors appear to coast"},
-  {icon:"&#x1F5E3;", text:'"Peak at the right moment. This week is that moment."',                   when:"Closing statement every session"},
-  {icon:"&#x1F5E3;", text:'"Round 3. Further than any EL team before us. That is the goal."',        when:"Before every session. Every time."}
+var LEADERS = [
+  {name:"Maddie Matz",     num:"#12", pos:"MF/FORW", yr:"Sr.", role:"On-field organizer. Sets the tempo in transition. The first voice when shape breaks."},
+  {name:"Kellie Cleeland", num:"#7",  pos:"MF/D",    yr:"Sr.", role:"Bridge between defense and midfield. Reads the game early. Communicates the line."},
+  {name:"Lily Cleeland",   num:"#1",  pos:"GK",      yr:"Sr.", role:"Commands the box and the backline. The team's eyes from behind. Loudest voice on the field."},
+  {name:"Melody Echeverria",num:"#16",pos:"MF/FORW", yr:"Jr.", role:"Energy carrier. Lifts the room before it needs lifting. First to press, first to encourage."},
+  {name:"Mona Lefevers",   num:"#23", pos:"FORW",    yr:"So.", role:"Young leader who earned it. Brings intensity from the front line. Sets the press standard."}
+];
+
+var LEADER_CUES = [
+  {icon:"&#x1F4AA;", text:'"We have been here before. Trust the work."',           when:"When nerves are high before a big game"},
+  {icon:"&#x1F525;", text:'"This is our moment. Not theirs."',                    when:"In the tunnel or huddle before kick-off"},
+  {icon:"&#x1F4AC;", text:'"Pick her up. We go together."',                       when:"When a teammate makes a mistake"},
+  {icon:"&#x26A1;",  text:'"Round 3. Further than anyone before us. Lets go."',   when:"When the team needs to remember the mission"},
+  {icon:"&#x2B50;",  text:'"I see you working. Keep going."',                     when:"To recognize a quiet player giving everything"}
 ];
 
 var PROG_MSGS = [
@@ -598,7 +619,9 @@ function buildWall() {
       var on = !!wallOn[name];
       div.className = "wcard" + (on ? " on" : "");
       div.id = "wc_" + name.replace(/\s/g,"_");
-      div.innerHTML = '<div class="wcard-name">' + name + '</div>' +
+      var inj = name.indexOf("\u26a0") !== -1;
+      var displayName = name.replace(" \u26a0\ufe0f INJ","");
+      div.innerHTML = '<div class="wcard-name">' + displayName + (inj ? ' <span style="font-size:9px;color:#f5a623;">\u26a0\ufe0f</span>' : '') + '</div>' +
         '<div class="wcard-sub">' + (on ? "All in \u2713" : "Tap to commit") + '</div>' +
         '<div class="wcard-chk">\u2713</div>';
       div.addEventListener("click", function() {
@@ -619,16 +642,47 @@ function buildWall() {
 
 function updateWallPills() {
   var n = Object.keys(wallOn).length;
-  var pct = Math.round(n / 19 * 100);
+  var pct = Math.round(n / 24 * 100);
   document.getElementById("wallCount").textContent = n + " pledged";
   document.getElementById("wallPct").textContent   = pct + "% all in";
 }
 
-// COACH
+// LEADERSHIP
 function buildCoach() {
+  // Leader cards
+  var lc = document.getElementById("leaderCards");
+  lc.innerHTML = "";
+  for (var i=0; i<LEADERS.length; i++) {
+    (function(l) {
+      var div = document.createElement("div");
+      div.className = "coach-card";
+      div.style.cssText = "border-left:3px solid var(--orange);border-radius:0 var(--r) var(--r) 0;";
+      div.innerHTML =
+        '<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">' +
+          '<span style="font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--orange-hi);">' + l.name + '</span>' +
+          '<span style="font-size:10px;font-weight:700;color:var(--text-tert);letter-spacing:.06em;">' + l.num + ' \u00b7 ' + l.pos + ' \u00b7 ' + l.yr + '</span>' +
+        '</div>' +
+        '<p style="font-size:12px;color:var(--text-sec);line-height:1.55;font-weight:300;">' + l.role + '</p>';
+      lc.appendChild(div);
+    })(LEADERS[i]);
+  }
+
+  // Leader cues
+  var ce = document.getElementById("leaderCues");
+  ce.innerHTML = "";
+  for (var j=0; j<LEADER_CUES.length; j++) {
+    var div2 = document.createElement("div");
+    div2.className = "cue-item";
+    div2.innerHTML =
+      '<div class="cue-text">' + LEADER_CUES[j].icon + " " + LEADER_CUES[j].text + '</div>' +
+      '<div class="cue-when">' + LEADER_CUES[j].when + '</div>';
+    ce.appendChild(div2);
+  }
+
+  // Commitment snapshot
   var n = Object.keys(wallOn).length;
   var strong = document.createElement("strong");
-  strong.style.cssText = "font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text);display:block;line-height:1;margin-bottom:2px;";
+  strong.style.cssText = "font-family:Bebas Neue,sans-serif;font-size:28px;color:var(--text);display:block;line-height:1;margin-bottom:2px;";
   strong.textContent = n;
   var cs = document.getElementById("coachSummary");
   cs.innerHTML = "";
@@ -637,23 +691,16 @@ function buildCoach() {
 
   var el = document.getElementById("coachRoster");
   el.innerHTML = "";
-  for (var i=0; i<ROSTER.length; i++) {
-    var yes = !!wallOn[ROSTER[i]];
+  for (var k=0; k<ROSTER.length; k++) {
+    var inj = ROSTER[k].indexOf("\u26a0") !== -1;
+    var displayName = ROSTER[k].replace(" \u26a0\ufe0f INJ","");
+    var yes = !!wallOn[ROSTER[k]];
     var row = document.createElement("div");
     row.className = "roster-row";
-    row.innerHTML = '<span class="roster-name">' + ROSTER[i] + '</span>' +
+    row.innerHTML =
+      '<span class="roster-name">' + displayName + (inj ? ' <span style="font-size:10px;color:#f5a623;">\u26a0\ufe0f INJ</span>' : '') + '</span>' +
       '<span class="roster-status ' + (yes?"yes":"no") + '">' + (yes?"\u2713 Committed":"Not yet") + '</span>';
     el.appendChild(row);
-  }
-
-  var ce = document.getElementById("coachCues");
-  ce.innerHTML = "";
-  for (var j=0; j<COACH_CUES.length; j++) {
-    var div = document.createElement("div");
-    div.className = "cue-item";
-    div.innerHTML = '<div class="cue-text">' + COACH_CUES[j].icon + " " + COACH_CUES[j].text + '</div>' +
-      '<div class="cue-when">When: ' + COACH_CUES[j].when + '</div>';
-    ce.appendChild(div);
   }
 }
 
