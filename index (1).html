@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EL Mustangs">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="logo.png">
+<title>EL Mustangs — Finish Strong 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a; --s1:#141414; --s2:#1c1c1c; --s3:#242424;
+  --border:#2c2c2c; --border-lit:#3c3c3c;
+  --orange:#f07020; --orange-hi:#ff8c3a; --orange-dim:rgba(240,112,32,0.14);
+  --fglow:rgba(30,92,48,0.22); --ftext:#6ecf8a; --fborder:rgba(110,207,138,0.25); --fsolid:#4a9e60;
+  --text:#f0ece4; --text-sec:#b4afa8; --text-tert:#787068;
+  --safe-top:env(safe-area-inset-top,0px); --safe-bot:env(safe-area-inset-bottom,0px);
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min-height:100%;overflow-x:hidden;padding-bottom:calc(74px + var(--safe-bot));}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;padding-top:var(--safe-top);}
+.nav-tab{flex:1;padding:14px 6px 12px;text-align:center;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tert);border-bottom:2px solid transparent;transition:color .15s,border-color .15s;user-select:none;-webkit-user-select:none;}
+.nav-tab.on{color:var(--orange);border-bottom-color:var(--orange);}
+
+/* VIEWS */
+.view{display:none;}
+.view.on{display:block;}
+
+/* TEAM HEADER */
+.hdr{display:flex;align-items:center;gap:14px;padding:18px 16px 14px;background:linear-gradient(180deg,rgba(240,112,32,0.09) 0%,transparent 100%);border-bottom:1px solid var(--border);}
+.logo{width:60px;height:60px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 10px rgba(240,112,32,0.3));}
+.tname{font-family:"Bebas Neue",sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;color:var(--text);}
+.tname span{color:var(--orange-hi);}
+.tsub{font-size:11px;color:var(--text-tert);letter-spacing:.04em;margin:3px 0 7px;}
+.pills{display:flex;gap:5px;flex-wrap:wrap;}
+.pill{font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:20px;}
+.pill-o{background:var(--orange-dim);color:var(--orange-hi);border:1px solid rgba(240,112,32,0.3);}
+.pill-g{background:var(--fglow);color:var(--ftext);border:1px solid var(--fborder);}
+.pill-m{background:var(--s3);color:var(--text-sec);border:1px solid var(--border-lit);}
+
+/* SECTION LABEL */
+.sec{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-tert);display:flex;align-items:center;gap:10px;padding:18px 16px 10px;}
+.sec::after{content:"";flex:1;height:1px;background:linear-gradient(to right,var(--border-lit),transparent);}
+
+/* LADDER */
+.ladder{padding:0 14px;display:flex;flex-direction:column;gap:8px;}
+.rung{display:flex;align-items:center;gap:12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px;position:relative;overflow:hidden;}
+.rung::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border-lit);}
+.rung.done::before{background:var(--fsolid);}
+.rung.now::before{background:var(--orange);}
+.rung.goal::before{background:var(--orange-hi);}
+.rung.done{background:rgba(30,92,48,0.07);border-color:rgba(74,158,96,0.3);}
+.rung.now{background:rgba(240,112,32,0.07);border-color:rgba(240,112,32,0.35);}
+.rn{font-family:"Bebas Neue",sans-serif;font-size:26px;line-height:1;width:26px;text-align:center;flex-shrink:0;color:var(--border-lit);}
+.rung.done .rn{color:var(--ftext);}
+.rung.now .rn,.rung.goal .rn{color:var(--orange-hi);}
+.rb{flex:1;}
+.rt{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.2;}
+.rung.done .rt{color:var(--ftext);}
+.rs{font-size:11px;color:var(--text-sec);line-height:1.4;}
+.rbadge{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:20px;flex-shrink:0;}
+.bd{background:var(--fglow);color:var(--ftext);border:1px solid var(--fborder);}
+.bn{background:var(--orange-dim);color:var(--orange-hi);border:1px solid rgba(240,112,32,0.35);}
+.bg{background:var(--s3);color:var(--text-tert);border:1px solid var(--border);}
+.bm{background:rgba(240,112,32,0.18);color:var(--orange-hi);border:1px solid rgba(240,112,32,0.45);}
+
+/* RITUAL */
+.ritual-wrap{padding:0 14px;}
+.ritual-card{background:var(--s1);border:1px solid var(--border-lit);border-top:3px solid var(--orange);border-radius:0 0 var(--r) var(--r);padding:16px;}
+.rday{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:.04em;color:var(--orange-hi);line-height:1;margin-bottom:1px;}
+.rdate{font-size:11px;color:var(--text-tert);letter-spacing:.04em;margin-bottom:12px;}
+.rquote{font-size:14.5px;line-height:1.78;color:var(--text);font-weight:300;font-style:italic;border-left:2px solid var(--orange);padding-left:14px;margin-bottom:14px;}
+.rquote strong{font-style:normal;font-weight:700;color:var(--orange-hi);}
+.rquote em{font-style:normal;font-weight:600;color:var(--ftext);}
+.rchecks{display:flex;flex-direction:column;gap:6px;}
+.rcheck{display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;transition:background .18s,border-color .18s;user-select:none;-webkit-user-select:none;}
+.rcheck.on{background:rgba(30,92,48,0.12);border-color:rgba(74,158,96,0.32);}
+.rcheck-icon{font-size:17px;flex-shrink:0;}
+.rcheck-text{flex:1;font-size:12.5px;color:var(--text-sec);line-height:1.4;}
+.rcheck.on .rcheck-text{color:var(--ftext);}
+.rcheck-box{width:22px;height:22px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--border-lit);background:var(--s3);display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;}
+.rcheck.on .rcheck-box{background:var(--fsolid);border-color:var(--ftext);}
+.rcheck-box svg{opacity:0;transform:scale(0.4);transition:opacity .2s,transform .2s;}
+.rcheck.on .rcheck-box svg{opacity:1;transform:scale(1);}
+
+/* COMMITMENTS */
+.commits{padding:0 14px;display:flex;flex-direction:column;gap:8px;}
+.ccard{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s,background .2s;position:relative;user-select:none;-webkit-user-select:none;}
+.ccard::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);opacity:.35;transition:background .25s,opacity .25s;}
+.ccard.on::before{background:var(--fsolid);opacity:1;}
+.ccard.on{border-color:rgba(74,158,96,0.35);background:rgba(30,92,48,0.07);}
+.ccard-inner{display:flex;align-items:flex-start;gap:12px;padding:14px 14px 13px;}
+.ccard-icon{font-size:20px;flex-shrink:0;line-height:1;margin-top:1px;}
+.ccard-body{flex:1;}
+.ccard-title{font-family:"Bebas Neue",sans-serif;font-size:16px;letter-spacing:.04em;color:var(--text);margin-bottom:4px;line-height:1;}
+.ccard.on .ccard-title{color:var(--ftext);}
+.ccard-desc{font-size:12px;color:var(--text-sec);line-height:1.5;font-weight:300;}
+.ccard-chk{width:24px;height:24px;border-radius:50%;flex-shrink:0;align-self:center;border:1.5px solid var(--border-lit);background:var(--s3);display:flex;align-items:center;justify-content:center;transition:background .22s,border-color .22s;}
+.ccard.on .ccard-chk{background:var(--fsolid);border-color:var(--ftext);}
+.ccard-chk svg{opacity:0;transform:scale(0.4);transition:opacity .22s,transform .22s;}
+.ccard.on .ccard-chk svg{opacity:1;transform:scale(1);}
+
+/* PROGRESS */
+.prog-wrap{padding:0 14px;}
+.prog-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+.prog-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-tert);}
+.prog-val{font-family:"Bebas Neue",sans-serif;font-size:22px;line-height:1;color:var(--text);}
+.prog-val span{font-size:14px;color:var(--text-tert);}
+.prog-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;margin-bottom:7px;}
+.prog-fill{height:100%;border-radius:3px;width:0%;transition:width .5s cubic-bezier(.4,0,.2,1);background:linear-gradient(90deg,var(--orange),var(--orange-hi));}
+.prog-msg{font-size:11px;color:var(--ftext);font-weight:500;min-height:16px;}
+
+/* PLEDGE */
+.pledge-wrap{padding:0 14px;}
+.pledge-card{background:var(--s1);border:1px solid var(--border-lit);border-left:3px solid var(--orange);border-radius:0 var(--r) var(--r) 0;padding:15px 16px 14px;}
+.pledge-lbl{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;display:block;}
+.pledge-sub{font-size:12px;color:var(--text-sec);line-height:1.6;margin-bottom:12px;}
+.pledge-input{width:100%;background:var(--s2);border:1px solid var(--border-lit);border-radius:10px;padding:11px 13px;font-size:14px;color:var(--text);font-family:"DM Sans",sans-serif;outline:none;resize:none;line-height:1.5;min-height:66px;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+.pledge-input::placeholder{color:var(--text-tert);}
+.pledge-input:focus{border-color:rgba(240,112,32,0.5);}
+.pledge-btn{margin-top:9px;width:100%;background:var(--orange);color:#0a0a0a;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:13px;border-radius:10px;border:none;cursor:pointer;font-family:"DM Sans",sans-serif;transition:background .15s;}
+.pledge-btn:active,.pledge-btn:hover{background:#d86010;}
+.pledge-ok{margin-top:7px;text-align:center;font-size:11.5px;color:var(--ftext);opacity:0;transition:opacity .3s;height:18px;}
+.pledge-ok.show{opacity:1;}
+
+/* WALL */
+.wall-intro{font-size:12.5px;color:var(--text-sec);line-height:1.6;padding:0 16px 14px;font-weight:300;}
+.wall-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;}
+.wcard{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px 13px 11px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;}
+.wcard::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s;opacity:.5;}
+.wcard.on::before{background:var(--fsolid);transform:scaleX(1);opacity:1;}
+.wcard.on{border-color:rgba(110,207,138,0.3);background:rgba(30,92,48,0.09);}
+.wcard-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.wcard.on .wcard-name{color:var(--ftext);}
+.wcard-sub{font-size:10.5px;color:var(--text-tert);}
+.wcard.on .wcard-sub{color:var(--fsolid);}
+.wcard-chk{position:absolute;top:9px;right:10px;font-size:13px;color:var(--ftext);opacity:0;transition:opacity .2s;}
+.wcard.on .wcard-chk{opacity:1;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px;}
+.stat-box{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:12px 10px 10px;text-align:center;}
+.stat-n{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:.02em;line-height:1;}
+.stat-n.g{color:var(--ftext);}
+.stat-n.o{color:var(--orange-hi);}
+.stat-n.w{color:var(--text);}
+.stat-l{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tert);margin-top:3px;}
+
+/* COACH */
+.coach-wrap{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
+.coach-card{background:var(--s1);border:1px solid var(--border-lit);border-radius:var(--r);padding:15px 16px;}
+.coach-title{font-family:"Bebas Neue",sans-serif;font-size:17px;letter-spacing:.04em;color:var(--orange);margin-bottom:10px;}
+.coach-note{font-size:12.5px;color:var(--text-sec);line-height:1.7;font-weight:300;font-style:italic;border-left:2px solid var(--fsolid);padding-left:12px;}
+.coach-note strong{font-style:normal;font-weight:600;color:var(--text);}
+.cue-list{display:flex;flex-direction:column;gap:7px;}
+.cue-item{background:var(--s2);border-radius:10px;padding:11px 13px;}
+.cue-text{font-size:13px;font-weight:600;color:var(--orange-hi);margin-bottom:2px;}
+.cue-when{font-size:11px;color:var(--text-tert);}
+.roster-list{display:flex;flex-direction:column;gap:4px;}
+.roster-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--s2);border-radius:8px;}
+.roster-name{font-size:12.5px;color:var(--text);font-weight:500;}
+.roster-status{font-size:10px;padding:2px 8px;border-radius:20px;}
+.roster-status.yes{background:var(--fglow);color:var(--ftext);}
+.roster-status.no{background:var(--s3);color:var(--text-tert);}
+
+/* BOTTOM BAR */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:rgba(10,10,10,0.97);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--border-lit);padding:10px 14px calc(10px + var(--safe-bot));display:flex;gap:8px;}
+.bb-p{flex:2;background:var(--orange);color:#0a0a0a;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:13px 16px;border-radius:10px;border:none;cursor:pointer;font-family:"DM Sans",sans-serif;transition:background .15s;}
+.bb-p:active{background:#d06010;}
+.bb-s{flex:1;background:var(--s3);color:var(--text-sec);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:13px 12px;border-radius:10px;border:1px solid var(--border-lit);cursor:pointer;font-family:"DM Sans",sans-serif;}
+.bb-g{flex:1;background:var(--fglow);color:var(--ftext);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:13px 12px;border-radius:10px;border:1px solid var(--fborder);cursor:pointer;font-family:"DM Sans",sans-serif;}
+
+/* iOS SHEET */
+.ios-ov{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:none;align-items:flex-end;}
+.ios-ov.show{display:flex;}
+.ios-sheet{width:100%;background:#111;border-radius:18px 18px 0 0;padding:20px 20px calc(20px + var(--safe-bot));}
+.ios-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.ios-body{font-size:13px;color:var(--text-sec);line-height:1.6;margin-bottom:16px;}
+.ios-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.ios-step{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-sec);}
+.ios-num{width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:1px;background:var(--orange-dim);border:1px solid rgba(240,112,32,0.3);color:var(--orange);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.ios-close{width:100%;background:var(--s3);border:1px solid var(--border-lit);color:var(--text-sec);font-size:13px;font-weight:500;padding:13px;border-radius:10px;cursor:pointer;font-family:"DM Sans",sans-serif;}
+.spacer{height:20px;}
+@keyframes popIn{0%{transform:scale(1);}45%{transform:scale(1.18);}75%{transform:scale(0.94);}100%{transform:scale(1);}}
+.pop{animation:popIn .3s ease;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-tab on" id="tab-player">&#x1F3C3; Player</div>
+  <div class="nav-tab" id="tab-team">&#x1F465; Team Wall</div>
+  <div class="nav-tab" id="tab-coach">&#x1F4CB; Coach</div>
+</nav>
+
+<!-- PLAYER -->
+<div class="view on" id="view-player">
+  <div class="hdr">
+    <img class="logo" src="logo.png" alt="EL Mustangs">
+    <div>
+      <div class="tname">EAST LINCOLN <span>MUSTANGS</span></div>
+      <div class="tsub">Girls Varsity Soccer &bull; Denver, NC &bull; Spring 2026</div>
+      <div class="pills">
+        <span class="pill pill-g">20 &mdash; 1 &mdash; 2</span>
+        <span class="pill pill-o">#36 NC</span>
+        <span class="pill pill-m">#255 National</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">2026 Playoff Run</div>
+  <div class="ladder">
+    <div class="rung done">
+      <div class="rn">&#10003;</div>
+      <div class="rb">
+        <div class="rt">Regular Season Complete</div>
+        <div class="rs">20-1-2 &bull; Conference 2nd &bull; #36 in NC</div>
+      </div>
+      <span class="rbadge bd">DONE</span>
+    </div>
+    <div class="rung now">
+      <div class="rn">!</div>
+      <div class="rb">
+        <div class="rt">Playoff Seeding &mdash; FRIDAY</div>
+        <div class="rs">Bracket drops tomorrow. Stay sharp. Stay ready.</div>
+      </div>
+      <span class="rbadge bn">TOMORROW</span>
+    </div>
+    <div class="rung">
+      <div class="rn">1</div>
+      <div class="rb">
+        <div class="rt">Round 1 &mdash; First Blood</div>
+        <div class="rs">No easy games in playoffs. Treat it like a final.</div>
+      </div>
+      <span class="rbadge bg">AHEAD</span>
+    </div>
+    <div class="rung">
+      <div class="rn">2</div>
+      <div class="rb">
+        <div class="rt">Round 2 &mdash; Stay Hungry</div>
+        <div class="rs">Keep the standard. No step back.</div>
+      </div>
+      <span class="rbadge bg">AHEAD</span>
+    </div>
+    <div class="rung goal">
+      <div class="rn">3</div>
+      <div class="rb">
+        <div class="rt">Round 3 &mdash; Make History</div>
+        <div class="rs">Further than any EL Women's team before us. This is the mission.</div>
+      </div>
+      <span class="rbadge bm">THE MISSION</span>
+    </div>
+    <div class="rung">
+      <div class="rn">+</div>
+      <div class="rb">
+        <div class="rt">Beyond &mdash; Uncharted Territory</div>
+        <div class="rs">No EL Women's team has been here. Write the chapter.</div>
+      </div>
+      <span class="rbadge bg">DREAM IT</span>
+    </div>
+  </div>
+
+  <div class="sec">Daily Training Ritual</div>
+  <div class="ritual-wrap">
+    <div class="ritual-card">
+      <div class="rday" id="rDay">TODAY</div>
+      <div class="rdate" id="rDate">Spring 2026 &bull; Playoff Preparation</div>
+      <div class="rquote" id="rQuote">Loading...</div>
+      <div class="rchecks" id="rChecks"></div>
+    </div>
+  </div>
+
+  <div class="sec">My Playoff Commitments</div>
+  <div class="commits" id="commits"></div>
+
+  <div class="sec">Progress</div>
+  <div class="prog-wrap">
+    <div class="prog-card">
+      <div class="prog-top">
+        <span class="prog-label">Commitments Pledged</span>
+        <span class="prog-val"><span id="progNum">0</span> <span>/ 6</span></span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-msg" id="progMsg">Tap a commitment above to pledge</div>
+    </div>
+  </div>
+
+  <div class="sec">My Personal Goal This Run</div>
+  <div class="pledge-wrap">
+    <div class="pledge-card">
+      <span class="pledge-lbl">Write it. Lock it. Own it.</span>
+      <p class="pledge-sub">One moment that belongs to you in the playoffs &mdash; a tackle, a run, a save, a header. Something only you can give this team.</p>
+      <textarea class="pledge-input" id="pledgeInput" placeholder="In the playoffs, I will..." rows="3"></textarea>
+      <button class="pledge-btn" id="pledgeBtn">&#x1F512; Lock It In</button>
+      <div class="pledge-ok" id="pledgeOk">&#10003; Locked. You've made it real.</div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- TEAM WALL -->
+<div class="view" id="view-team">
+  <div class="hdr">
+    <img class="logo" src="logo.png" alt="EL Mustangs">
+    <div>
+      <div class="tname">MUSTANG <span>WALL</span></div>
+      <div class="tsub">Everyone who pledges shows here</div>
+      <div class="pills">
+        <span class="pill pill-o" id="wallCount">0 pledged</span>
+        <span class="pill pill-g" id="wallPct">0% all in</span>
+      </div>
+    </div>
+  </div>
+  <div class="sec">Squad</div>
+  <p class="wall-intro">Tap your name when you've made your commitments. The whole team sees who's all in. <strong style="color:var(--text)">No pressure &mdash; just accountability.</strong></p>
+  <div class="wall-grid" id="wallGrid"></div>
+  <div class="sec">Season Numbers</div>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="stat-n g">20</div><div class="stat-l">Wins</div></div>
+    <div class="stat-box"><div class="stat-n w">1</div><div class="stat-l">Loss</div></div>
+    <div class="stat-box"><div class="stat-n w">2</div><div class="stat-l">Draws</div></div>
+    <div class="stat-box"><div class="stat-n o">#36</div><div class="stat-l">NC Rank</div></div>
+    <div class="stat-box"><div class="stat-n o">255</div><div class="stat-l">National</div></div>
+    <div class="stat-box"><div class="stat-n g">R3+</div><div class="stat-l">The Goal</div></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- COACH -->
+<div class="view" id="view-coach">
+  <div class="hdr">
+    <img class="logo" src="logo.png" alt="EL Mustangs">
+    <div>
+      <div class="tname">COACH <span>DASHBOARD</span></div>
+      <div class="tsub">East Lincoln Mustangs &bull; 2026 Playoffs</div>
+      <div class="pills">
+        <span class="pill pill-g">20 &mdash; 1 &mdash; 2</span>
+        <span class="pill pill-o">Seeding: Friday</span>
+      </div>
+    </div>
+  </div>
+  <div class="sec">Season Stats</div>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="stat-n g">20</div><div class="stat-l">Wins</div></div>
+    <div class="stat-box"><div class="stat-n w">1</div><div class="stat-l">Loss</div></div>
+    <div class="stat-box"><div class="stat-n w">2</div><div class="stat-l">Draws</div></div>
+    <div class="stat-box"><div class="stat-n o">#36</div><div class="stat-l">NC Rank</div></div>
+    <div class="stat-box"><div class="stat-n w">255</div><div class="stat-l">National</div></div>
+    <div class="stat-box"><div class="stat-n w" style="font-size:18px;">14-1-1</div><div class="stat-l">Conference</div></div>
+  </div>
+  <div class="sec">Playoff Mission</div>
+  <div class="coach-wrap">
+    <div class="coach-card">
+      <p class="coach-note"><strong>Target: Round 3 and beyond.</strong> Rounds 1 and 2 are controlled &mdash; managed with full intensity but not desperation. <strong>Round 3 is the real mission.</strong> A result there advances this program further than any previous EL Women's team. That's the conversation this week. That's the standard.</p>
+    </div>
+  </div>
+  <div class="sec">Player Commitment Tracker</div>
+  <div class="coach-wrap">
+    <div class="coach-card">
+      <div id="coachSummary" style="font-size:13px;color:var(--text-sec);margin-bottom:10px;"><strong style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text);display:block;line-height:1;margin-bottom:2px;">0</strong> players committed on Team Wall</div>
+      <div class="roster-list" id="coachRoster"></div>
+    </div>
+  </div>
+  <div class="sec">Pre-Training Cues</div>
+  <div class="coach-wrap">
+    <div class="coach-card">
+      <div class="coach-title">Say Before Every Session</div>
+      <div class="cue-list" id="coachCues"></div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar" id="bottomBar">
+  <button class="bb-s" id="shareBtn">&#x2197; Share</button>
+  <button class="bb-g" id="installBtn">+ Install</button>
+  <button class="bb-p" id="commitBtn">My Commitments &#x2192;</button>
+</div>
+
+<!-- iOS SHEET -->
+<div class="ios-ov" id="iosOv">
+  <div class="ios-sheet">
+    <div class="ios-title">Add to Home Screen</div>
+    <p class="ios-body">Save as an app &mdash; opens instantly with no browser. Your pledges stay saved.</p>
+    <div class="ios-steps">
+      <div class="ios-step"><span class="ios-num">1</span>Tap the <strong style="color:var(--text)">Share button</strong> at the bottom of Safari</div>
+      <div class="ios-step"><span class="ios-num">2</span>Tap <strong style="color:var(--text)">"Add to Home Screen"</strong></div>
+      <div class="ios-step"><span class="ios-num">3</span>Tap <strong style="color:var(--text)">Add</strong> &mdash; done</div>
+    </div>
+    <button class="ios-close" id="iosClose">Got it &mdash; Let's go!</button>
+  </div>
+</div>
+
+<script>
+var ROSTER = [
+  "Lily Cleeland",
+  "Alina Strauss",
+  "Kennedy Gallentine",
+  "Brooklynn Benfield",
+  "Elysia Tiziani",
+  "Briana Hickey",
+  "Kellie Cleeland",
+  "Kenadee Byus",
+  "Stella Lubowicz",
+  "Sophia Espinosa-Benton",
+  "McKenzie Benfield",
+  "Maddie Matz",
+  "Ally Stewart",
+  "Katelyn Grass",
+  "Sydney Dann",
+  "Melody Echeverria",
+  "Piper Rasmussen",
+  "Lily Felts",
+  "Emma Davis"
+];
+
+var COMMITS = [
+  {id:"peak",  icon:"&#x1F3C6;", title:"I WILL PEAK ON GAME DAY",         desc:"Not in practice. Not the day before. My absolute best is saved for when the whistle blows in the playoffs."},
+  {id:"effort",icon:"&#x1F525;", title:"BEST PRACTICE WEEK OF THE SEASON", desc:"Every rep, every drill, every sprint this week gets full effort. No coasting. No going through the motions."},
+  {id:"push",  icon:"&#x1F4AA;", title:"I AM A PUSHER, NOT A PASSENGER",   desc:"Whether I start or come off the bench my energy raises the standard. I push my teammates every session."},
+  {id:"voice", icon:"&#x1F4E3;", title:"MY VOICE IS A WEAPON",             desc:"On the bench, on the field, in warm-ups. Loud, sharp, present. My readiness when called is non-negotiable."},
+  {id:"stand", icon:"&#x2B50;",  title:"I HOLD THE STANDARD",              desc:"20 wins happened because this team held each other accountable. That does not drop in our final push."},
+  {id:"hist",  icon:"&#x1F3C1;", title:"I WILL HELP MAKE HISTORY",         desc:"Further than any EL Women's team before us. Round 3 and beyond. I commit to being part of that story."}
+];
+
+var AFFIRMATIONS = [
+  {day:"SUNDAY",    text:"Rest and reset. <strong>Twenty wins didn't happen by accident.</strong> It happened because of what this team built behind the scenes. Tomorrow it starts again &mdash; with everything."},
+  {day:"MONDAY",    text:"New week. <strong>New standard.</strong> Whatever seed, whatever opponent &mdash; <em>none of it changes how we prepare.</em> Same intensity. Same together."},
+  {day:"TUESDAY",   text:"Stay sharp. <strong>The trap is easing up when you feel ready.</strong> The best teams get sharper as the rounds advance. <em>Be that team.</em>"},
+  {day:"WEDNESDAY", text:"<strong>Peak at the right moment.</strong> Every early morning, every hard practice, every moment you chose the team &mdash; it was all building to this week."},
+  {day:"THURSDAY",  text:"<strong>The pushers never stopped.</strong> The workers set the standard all season. This week the whole team runs with them. <em>No one sits this out in their head.</em>"},
+  {day:"FRIDAY",    text:"Seeding day. <strong>The bracket drops today.</strong> Whatever comes &mdash; we are ready. Twenty wins proves it. Now we go take what this season deserves."},
+  {day:"SATURDAY",  text:"<strong>Round 3. Further than any EL Women's team before us.</strong> This is the chapter that gets written in the history of this program. <em>You built this. Now finish it.</em>"}
+];
+
+var RITUAL_ITEMS = [
+  {id:"r1", icon:"&#x1F9E0;", text:"Read today's affirmation out loud"},
+  {id:"r2", icon:"&#x1F3AF;", text:"Review my personal playoff goal"},
+  {id:"r3", icon:"&#x1F4AC;", text:"Say something encouraging to a teammate"},
+  {id:"r4", icon:"&#x1F3C3;", text:"Give full effort in every drill today"},
+  {id:"r5", icon:"&#x1F512;", text:"Hold my commitments every minute"}
+];
+
+var COACH_CUES = [
+  {icon:"&#x1F5E3;", text:'"Twenty wins is the floor, not the ceiling."',                             when:"Open every pre-training huddle"},
+  {icon:"&#x1F5E3;", text:'"I felt more drive than you last week. That changes today."',              when:"When energy is flat at the start"},
+  {icon:"&#x1F5E3;", text:'"The pushers never stopped. Everyone runs with them now."',               when:"To lift bench players and hardest workers"},
+  {icon:"&#x1F5E3;", text:'"Potential without performance at the right moment is a lost opportunity."', when:"If seniors appear to coast"},
+  {icon:"&#x1F5E3;", text:'"Peak at the right moment. This week is that moment."',                   when:"Closing statement every session"},
+  {icon:"&#x1F5E3;", text:'"Round 3. Further than any EL team before us. That is the goal."',        when:"Before every session. Every time."}
+];
+
+var PROG_MSGS = [
+  "Tap a commitment above to pledge",
+  "One step taken. Keep going.",
+  "Building momentum.",
+  "Halfway committed.",
+  "Four locked in. This is real.",
+  "Five. Almost everything.",
+  "ALL IN. Let's make history."
+];
+
+// STATE
+var pledged    = {};
+var wallOn     = {};
+var ritualDone = {};
+
+function load() {
+  try {
+    var p = localStorage.getItem("el_pledged");
+    if (p) { var arr = JSON.parse(p); for (var i=0;i<arr.length;i++) pledged[arr[i]] = true; }
+    var w = localStorage.getItem("el_wall");
+    if (w) { var arr2 = JSON.parse(w); for (var j=0;j<arr2.length;j++) wallOn[arr2[j]] = true; }
+    var pi = localStorage.getItem("el_personal");
+    if (pi) document.getElementById("pledgeInput").value = pi;
+    var today = new Date().toDateString();
+    var r = localStorage.getItem("el_ritual_" + today);
+    if (r) { var arr3 = JSON.parse(r); for (var k=0;k<arr3.length;k++) ritualDone[arr3[k]] = true; }
+  } catch(e) {}
+}
+
+function save() {
+  try {
+    localStorage.setItem("el_pledged", JSON.stringify(Object.keys(pledged)));
+    localStorage.setItem("el_wall",    JSON.stringify(Object.keys(wallOn)));
+  } catch(e) {}
+}
+
+function saveRitual() {
+  try {
+    localStorage.setItem("el_ritual_" + new Date().toDateString(), JSON.stringify(Object.keys(ritualDone)));
+  } catch(e) {}
+}
+
+// VIEW SWITCH
+function switchView(v) {
+  var views = document.querySelectorAll(".view");
+  for (var i=0; i<views.length; i++) views[i].classList.remove("on");
+  var tabs = document.querySelectorAll(".nav-tab");
+  for (var j=0; j<tabs.length; j++) tabs[j].classList.remove("on");
+  document.getElementById("view-" + v).classList.add("on");
+  document.getElementById("tab-" + v).classList.add("on");
+  document.getElementById("bottomBar").style.display = (v === "player") ? "flex" : "none";
+  if (v === "coach") buildCoach();
+  if (v === "team")  updateWallPills();
+  window.scrollTo(0, 0);
+}
+
+// RITUAL
+function buildRitual() {
+  var now = new Date();
+  var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var aff = AFFIRMATIONS[now.getDay()];
+  document.getElementById("rDay").textContent = aff.day;
+  document.getElementById("rDate").textContent = months[now.getMonth()] + " " + now.getDate() + " \u00b7 Spring 2026 Playoff Preparation";
+  document.getElementById("rQuote").innerHTML  = aff.text;
+
+  var el = document.getElementById("rChecks");
+  el.innerHTML = "";
+  for (var i=0; i<RITUAL_ITEMS.length; i++) {
+    (function(item) {
+      var div = document.createElement("div");
+      div.className = "rcheck" + (ritualDone[item.id] ? " on" : "");
+      div.id = "rc_" + item.id;
+      div.innerHTML = '<span class="rcheck-icon">' + item.icon + '</span>' +
+        '<span class="rcheck-text">' + item.text + '</span>' +
+        '<div class="rcheck-box"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l5 5L19 7" stroke="#6ecf8a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+      div.addEventListener("click", function() {
+        if (ritualDone[item.id]) { delete ritualDone[item.id]; div.classList.remove("on"); }
+        else                      { ritualDone[item.id] = true; div.classList.add("on"); }
+        saveRitual();
+      });
+      el.appendChild(div);
+    })(RITUAL_ITEMS[i]);
+  }
+}
+
+// COMMITMENTS
+function buildCommits() {
+  var el = document.getElementById("commits");
+  el.innerHTML = "";
+  for (var i=0; i<COMMITS.length; i++) {
+    (function(c) {
+      var div = document.createElement("div");
+      div.className = "ccard" + (pledged[c.id] ? " on" : "");
+      div.id = "cc_" + c.id;
+      div.innerHTML = '<div class="ccard-inner">' +
+        '<span class="ccard-icon">' + c.icon + '</span>' +
+        '<div class="ccard-body">' +
+          '<div class="ccard-title">' + c.title + '</div>' +
+          '<div class="ccard-desc">' + c.desc + '</div>' +
+        '</div>' +
+        '<div class="ccard-chk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l5 5L19 7" stroke="#6ecf8a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '</div>';
+      div.addEventListener("click", function() {
+        if (pledged[c.id]) { delete pledged[c.id]; div.classList.remove("on"); }
+        else { pledged[c.id] = true; div.classList.add("on"); div.classList.add("pop"); setTimeout(function(){div.classList.remove("pop");},350); }
+        save();
+        updateProgress();
+      });
+      el.appendChild(div);
+    })(COMMITS[i]);
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  var keys = Object.keys(pledged);
+  var n = keys.length;
+  document.getElementById("progNum").textContent = n;
+  document.getElementById("progMsg").textContent = PROG_MSGS[n] || "";
+  var fill = document.getElementById("progFill");
+  fill.style.width = Math.round(n / COMMITS.length * 100) + "%";
+  if (n === COMMITS.length)    fill.style.background = "linear-gradient(90deg,#1e5c30,#6ecf8a)";
+  else if (n >= 4) fill.style.background = "linear-gradient(90deg,#4a9e60,#6ecf8a)";
+  else             fill.style.background = "linear-gradient(90deg,#f07020,#ff8c3a)";
+}
+
+// WALL
+function buildWall() {
+  var el = document.getElementById("wallGrid");
+  el.innerHTML = "";
+  for (var i=0; i<ROSTER.length; i++) {
+    (function(name) {
+      var div = document.createElement("div");
+      var on = !!wallOn[name];
+      div.className = "wcard" + (on ? " on" : "");
+      div.id = "wc_" + name.replace(/\s/g,"_");
+      div.innerHTML = '<div class="wcard-name">' + name + '</div>' +
+        '<div class="wcard-sub">' + (on ? "All in \u2713" : "Tap to commit") + '</div>' +
+        '<div class="wcard-chk">\u2713</div>';
+      div.addEventListener("click", function() {
+        if (wallOn[name]) {
+          delete wallOn[name]; div.classList.remove("on");
+          div.querySelector(".wcard-sub").textContent = "Tap to commit";
+        } else {
+          wallOn[name] = true; div.classList.add("on");
+          div.querySelector(".wcard-sub").textContent = "All in \u2713";
+        }
+        save(); updateWallPills();
+      });
+      el.appendChild(div);
+    })(ROSTER[i]);
+  }
+  updateWallPills();
+}
+
+function updateWallPills() {
+  var n = Object.keys(wallOn).length;
+  var pct = Math.round(n / 19 * 100);
+  document.getElementById("wallCount").textContent = n + " pledged";
+  document.getElementById("wallPct").textContent   = pct + "% all in";
+}
+
+// COACH
+function buildCoach() {
+  var n = Object.keys(wallOn).length;
+  var strong = document.createElement("strong");
+  strong.style.cssText = "font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text);display:block;line-height:1;margin-bottom:2px;";
+  strong.textContent = n;
+  var cs = document.getElementById("coachSummary");
+  cs.innerHTML = "";
+  cs.appendChild(strong);
+  cs.appendChild(document.createTextNode(" players committed on Team Wall"));
+
+  var el = document.getElementById("coachRoster");
+  el.innerHTML = "";
+  for (var i=0; i<ROSTER.length; i++) {
+    var yes = !!wallOn[ROSTER[i]];
+    var row = document.createElement("div");
+    row.className = "roster-row";
+    row.innerHTML = '<span class="roster-name">' + ROSTER[i] + '</span>' +
+      '<span class="roster-status ' + (yes?"yes":"no") + '">' + (yes?"\u2713 Committed":"Not yet") + '</span>';
+    el.appendChild(row);
+  }
+
+  var ce = document.getElementById("coachCues");
+  ce.innerHTML = "";
+  for (var j=0; j<COACH_CUES.length; j++) {
+    var div = document.createElement("div");
+    div.className = "cue-item";
+    div.innerHTML = '<div class="cue-text">' + COACH_CUES[j].icon + " " + COACH_CUES[j].text + '</div>' +
+      '<div class="cue-when">When: ' + COACH_CUES[j].when + '</div>';
+    ce.appendChild(div);
+  }
+}
+
+// BUTTONS
+document.getElementById("tab-player").addEventListener("click", function(){ switchView("player"); });
+document.getElementById("tab-team").addEventListener("click",   function(){ switchView("team"); });
+document.getElementById("tab-coach").addEventListener("click",  function(){ switchView("coach"); });
+
+document.getElementById("pledgeBtn").addEventListener("click", function() {
+  var v = document.getElementById("pledgeInput").value.trim();
+  if (!v) return;
+  try { localStorage.setItem("el_personal", v); } catch(e) {}
+  var ok = document.getElementById("pledgeOk");
+  ok.classList.add("show");
+  setTimeout(function(){ ok.classList.remove("show"); }, 2800);
+});
+
+document.getElementById("commitBtn").addEventListener("click", function() {
+  document.getElementById("commits").scrollIntoView({behavior:"smooth"});
+});
+
+document.getElementById("shareBtn").addEventListener("click", function() {
+  if (navigator.share) {
+    navigator.share({title:"EL Mustangs \u2014 Finish Strong 2026", text:"East Lincoln Mustangs 20-1-2. We're going further than any team before us.", url:window.location.href}).catch(function(){});
+  } else {
+    try { navigator.clipboard.writeText(window.location.href); alert("Link copied!"); } catch(e){ alert(window.location.href); }
+  }
+});
+
+var deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferredPrompt = e; });
+
+document.getElementById("installBtn").addEventListener("click", function() {
+  if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){ deferredPrompt=null; }); }
+  else { document.getElementById("iosOv").classList.add("show"); }
+});
+
+document.getElementById("iosClose").addEventListener("click", function() {
+  document.getElementById("iosOv").classList.remove("show");
+  try { localStorage.setItem("el_ios","1"); } catch(e){}
+});
+
+document.getElementById("iosOv").addEventListener("click", function(e) {
+  if (e.target === this) { this.classList.remove("show"); }
+});
+
+// SERVICE WORKER
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(function(){});
+}
+
+// iOS auto-hint
+window.addEventListener("load", function() {
+  setTimeout(function() {
+    try {
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      var standalone = window.matchMedia("(display-mode:standalone)").matches || navigator.standalone;
+      if (isIOS && !standalone && !localStorage.getItem("el_ios")) {
+        document.getElementById("iosOv").classList.add("show");
+      }
+    } catch(e){}
+  }, 4000);
+});
+
+// INIT
+load();
+buildRitual();
+buildCommits();
+buildWall();
+</script>
+</body>
+</html>
